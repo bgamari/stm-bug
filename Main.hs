@@ -36,8 +36,8 @@ data SuspendF v next
   | forall r. StepIO (IO r) (r -> next)
 
 instance Functor (SuspendF v) where
-  fmap f (StepSTM x g) = StepSTM x (f . g)
-  fmap f (StepIO x g) = StepIO x (f . g)
+  fmap f (StepSTM y g) = StepSTM y (f . g)
+  fmap f (StepIO y g) = StepIO y (f . g)
 
 newtype Widget v a = Widget { step :: Free (SuspendF v) a }
   deriving (Functor, Applicative, Monad)
@@ -64,7 +64,7 @@ runWidget (Widget w) = case w of
     a <- action
     runWidget (Widget (next a))
   Free (StepSTM _ _ ) -> error "hi"
-  Pure x -> return x
+  Pure r -> return r
 
 #if defined(GOOD)
 main :: IO ()
