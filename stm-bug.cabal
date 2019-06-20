@@ -1,0 +1,21 @@
+cabal-version: 1.12
+
+name:           stm-bug
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/stm-bug#readme>
+homepage:       https://github.com/githubuser/stm-bug#readme
+bug-reports:    https://github.com/githubuser/stm-bug/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2019 Author name here
+license:        BSD3
+build-type:     Simple
+
+executable stm-bug-exe
+  main-is: Main.hs
+  ghc-options: -O1 -rtsopts -debug
+  build-depends:
+      base >=4.7 && <5
+    , free
+    , stm
+  default-language: Haskell2010
