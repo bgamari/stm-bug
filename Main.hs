@@ -30,15 +30,7 @@ instance Functor f => Monad (Free f) where
   Pure a >>= f = f a
   Free m >>= f = Free ((>>= f) <$> m)
 
-liftF :: (Functor f, MonadFree f m) => f a -> m a
-liftF = wrap . fmap return
-
 class Monad m => MonadFree f m | m -> f where
-  -- | Add a layer.
-  --
-  -- @
-  -- wrap (fmap f x) ≡ wrap (fmap return x) >>= f
-  -- @
   wrap :: f (m a) -> m a
 
 instance Functor f => MonadFree f (Free f) where
@@ -54,10 +46,10 @@ newtype Widget v a = Widget { step :: Free (SuspendF v) a }
   deriving (Functor, Applicative, Monad)
 
 effect :: STM a -> Widget v a
-effect a = Widget (liftF (StepSTM a id))
+effect a = Widget (wrap $ fmap return (StepSTM a id))
 
 io :: IO a ->  Widget v a
-io a = Widget (liftF (StepIO a id))
+io a = Widget (wrap $ fmap return (StepIO a id))
 
 comb :: Monoid v => [Free (SuspendF v) a] -> Widget v a
 comb vs = io (do
