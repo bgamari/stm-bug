@@ -5,7 +5,7 @@ set -ex
 GHC=ghc
 args="$args Main.hs \
   -debug -O1 -fforce-recomp -Wall \
-  -ddump-simpl -dsuppress-coercions -ddump-to-file -dsuppress-uniques \
+  -ddump-simpl -ddump-stg -dsuppress-coercions -ddump-to-file -dsuppress-uniques \
   -dcore-lint -dstg-lint -dcmm-lint -dppr-cols=120"
 
 $GHC $args -o Main-good -dumpdir good -DGOOD
