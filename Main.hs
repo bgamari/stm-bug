@@ -69,4 +69,4 @@ runWidget (Widget w) = case w of
 #if defined(GOOD)
 main :: IO ()
 #endif
-main = runWidget (comb (map step (replicate 10000000 (effect retry))))
+main = runWidget (comb (map step (replicate 1000000 (effect retry))))
