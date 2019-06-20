@@ -30,12 +30,6 @@ instance Functor f => Monad (Free f) where
   Pure a >>= f = f a
   Free m >>= f = Free ((>>= f) <$> m)
 
-class Monad m => MonadFree f m | m -> f where
-  wrap :: f (m a) -> m a
-
-instance Functor f => MonadFree f (Free f) where
-  wrap = Free
-
 data SuspendF v next
   = forall r. StepSTM (STM r) (r -> next)
   | forall r. StepIO (IO r) (r -> next)
