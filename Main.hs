@@ -46,10 +46,10 @@ newtype Widget v a = Widget { step :: Free (SuspendF v) a }
   deriving (Functor, Applicative, Monad)
 
 effect :: STM a -> Widget v a
-effect a = Widget (wrap $ fmap return (StepSTM a id))
+effect a = Widget (Free $ fmap return (StepSTM a id))
 
 io :: IO a ->  Widget v a
-io a = Widget (wrap $ fmap return (StepIO a id))
+io a = Widget (Free $ fmap return (StepIO a id))
 
 comb :: Monoid v => [Free (SuspendF v) a] -> Widget v a
 comb vs = io (do
