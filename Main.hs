@@ -83,5 +83,4 @@ runWidget (Widget w) = case w of
     a <- io
     runWidget $ Widget $ next a
 
-main :: IO ()
 main = runWidget $ comb $ map step (replicate 10000000 (effect retry))
