@@ -11,13 +11,9 @@
 
 module Main where
 
-import           Control.Applicative
 import           Control.Concurrent.STM
-import           Control.Monad
-import           Control.Monad.Trans.Class
 import           Data.Typeable
 import           GHC.Generics
-import           System.Mem
 
 data Free f a = Pure a | Free (f (Free f a))
   deriving (Typeable, Generic, Generic1)
@@ -51,8 +47,6 @@ class Monad m => MonadFree f m | m -> f where
   -- wrap (fmap f x) ≡ wrap (fmap return x) >>= f
   -- @
   wrap :: f (m a) -> m a
-  default wrap :: (m ~ t n, MonadTrans t, MonadFree f n, Functor f) => f (m a) -> m a
-  wrap = join . lift . wrap . fmap return
 
 instance Functor f => MonadFree f (Free f) where
   wrap = Free
@@ -89,4 +83,5 @@ runWidget (Widget w) = case w of
     a <- io
     runWidget $ Widget $ next a
 
+main :: IO ()
 main = runWidget $ comb $ map step (replicate 10000000 (effect retry))
