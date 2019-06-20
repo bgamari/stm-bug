@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP          #-}
 {-# LANGUAGE DefaultSignatures          #-}
 {-# LANGUAGE DeriveFunctor              #-}
 {-# LANGUAGE ExistentialQuantification  #-}
@@ -65,4 +66,7 @@ runWidget (Widget w) = case w of
   Free (StepSTM _ _ ) -> error "hi"
   Pure x -> return x
 
+#if defined(GOOD)
+main :: IO ()
+#endif
 main = runWidget (comb (map step (replicate 10000000 (effect retry))))
