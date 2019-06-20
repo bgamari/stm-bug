@@ -34,7 +34,9 @@ data SuspendF v next
   = forall r. StepSTM (STM r) (r -> next)
   | forall r. StepIO (IO r) (r -> next)
 
-deriving instance Functor (SuspendF v)
+instance Functor (SuspendF v) where
+  fmap f (StepSTM x g) = StepSTM x (f . g)
+  fmap f (StepIO x g) = StepIO x (f . g)
 
 newtype Widget v a = Widget { step :: Free (SuspendF v) a }
   deriving (Functor, Applicative, Monad)
